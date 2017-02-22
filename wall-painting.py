@@ -3,8 +3,14 @@ import math
 running_wall_area_total = 0
 wall_area = 0
 more_walls = 'y'
+there_are_more_walls = True
 
-# get the wall's width and height from user
+## NOT IN USE YET
+def get_area(width, height):
+    area = width * height
+    return area
+
+#get the wall's width and height from user
 while  more_walls == 'y' or 'Y':
     wall_width = float(input("How wide is the wall (in feet)? >"))
     wall_height = float(input("How high is the wall (in feet)? >"))
@@ -19,6 +25,33 @@ while  more_walls == 'y' or 'Y':
 
     # find out if there are more walls to include in calculation
     more_walls = str(input('Are there more walls? (y/n) >'))
+
+# while there_are_more_walls == True:
+#     wall_width = float(input("How wide is the wall (in feet)? >"))
+#     wall_height = float(input("How high is the wall (in feet)? >"))
+#
+#     # calculate the area of the wall
+#     wall_area = int(wall_width) * int(wall_height)
+#
+#     print("wall_area: " + str(wall_area))
+#
+#     # keep a running total of the wall_area
+#     running_wall_area_total += wall_area
+#
+#     # find out if there are more walls to include in the calculation
+#     more_walls = input('Are there more walls? (y/n) >')
+#     # change the answer to lowercase
+#     more_walls = more_walls.lower()
+#
+#     # if there are more walls, continue loop, otherwise end loop
+#     if more_walls in ['y', 'yes']:
+#         there_are_more_walls = True
+#     else:
+#         there_are_more_walls = False
+
+
+
+
 
 
 # get the cost of paint and coats of paint from user
