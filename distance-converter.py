@@ -107,7 +107,7 @@ def main():
 
     # ------- OUTPUT TO USER --------------
 
-    print(str(orig_dist) + ' ' + orig_unit + ' is ' + (str(dist_in_target_unit)) + ' ' + target_unit + '.')
+    print(str(int(orig_dist)) + ' ' + orig_unit + ' is ' + (str(dist_in_target_unit)) + ' ' + target_unit + '.')
 
 
 if __name__ == '__main__':
