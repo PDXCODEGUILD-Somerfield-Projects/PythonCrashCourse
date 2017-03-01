@@ -1,3 +1,12 @@
+"""Converts user input from one case type string to another
+
+Case types include:
+    * CamelCase
+    * kebab-case
+    * snake_case
+    * CONSTANT_CASE
+"""
+
 
 def determine_case(case_string):
     """Finds the case type of a string
@@ -57,17 +66,16 @@ def resolve_case_type(underscore, dash, all_caps, uppercase_ltr):
     :param uppercase_ltr:
     :return:
     """
-    if underscore == True and all_caps == False:
+    if underscore == True and all_caps == False and dash == False and uppercase_ltr == False:
         case = 'snake'
-    elif underscore == True and all_caps == True:
+    elif underscore == True and all_caps == True and dash == False:
         case = 'constant'
-    elif dash == True and all_caps == False:
+    elif dash == True and all_caps == False and underscore == False and uppercase_ltr == False:
         case = 'kebab'
     elif underscore == False and dash == False and all_caps == False and uppercase_ltr == True:
         case = 'camel'
     else:
-        print('Not able to identify this case type.')
-        exit()
+        case = 'unidentified'
     return case
 
 def create_intermediary(case_string, case_type):
@@ -260,21 +268,34 @@ def create_output_string(intermediate_list, output_case_type):
 
 def main():
     # get input from user:
-    original_string = input('Enter an expression in any of these cases: '
+    while True:
+        original_string = input('Enter an expression in any of these cases: '
                             'snake_case, CamelCase, kebab-case, or CONSTANT_CASE >')
-    output_case = input('What case do you want to change to: '
+        case_type = determine_case(original_string)
+        if case_type == 'unidentified':
+            print('The case type in that expression is not recognized.')
+            continue
+        else:
+            break
+
+
+    while True:
+        output_case = input('What case do you want to change to: '
                         'snake, camel, kebab, or constant: >')
+        if output_case not in ('snake', 'camel', 'kebab', 'constant'):
+            print('Sorry, I didn\'t understand that.')
+            continue
+        else:
+            break
 
     # run through functions:
-    case_type = determine_case(original_string)
-
     intermediate_list = create_intermediary(original_string, case_type)
-
     output_string = create_output_string(intermediate_list, output_case)
 
-
     # output new string to user:
-    print(original_string + ' to ' + output_case  + ' is ' + output_string + '.')
+    print(original_string + ' to ' + output_case + ' is ' + output_string + '.')
+
+
 
 
 if __name__ == '__main__':
