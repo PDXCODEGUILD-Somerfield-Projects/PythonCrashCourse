@@ -10,6 +10,7 @@ CAMEL_CASE = 'camel'
 KEBAB_CASE = 'kebab'
 SNAKE_CASE = 'snake'
 CONSTANT_CASE = 'constant'
+LOWER_CASE_ONE = 'lower'
 NOT_A_CASE = 'unidentified'
 
 def determine_case(case_string):
@@ -32,7 +33,18 @@ def determine_case(case_string):
 
     >>> determine_case('THIS_IS_A_STRING')
     'constant'
+
+    >>> determine_case('WORD')
+    'constant'
+
+    >>> determine_case('word')
+    'lower'
+
+    >>> determine_case('Blah')
+    'camel'
+
     """
+    uppercase_ltr = False
     if '_' in case_string:
         underscore = True
     else:
@@ -41,11 +53,8 @@ def determine_case(case_string):
         dash = True
     else:
         dash = False
-    if case_string.isupper():
-        all_caps = True
-    else:
-        all_caps = False
-    if all_caps == False:
+    all_caps = case_string.isupper()
+    if not all_caps:
         for char in case_string:
             if char.isupper():
                 uppercase_ltr = True
@@ -54,10 +63,11 @@ def determine_case(case_string):
                 uppercase_ltr = False
     else:
         uppercase_ltr = True
-    return resolve_case_type(underscore, dash, all_caps, uppercase_ltr)
+    one_word = case_string.isalpha()
+    return resolve_case_type(underscore, dash, all_caps, uppercase_ltr, one_word)
 
 
-def resolve_case_type(underscore, dash, all_caps, uppercase_ltr):
+def resolve_case_type(underscore, dash, all_caps, uppercase_ltr, one_word):
     """Takes the parameters from the determine_case function and returns the case type
 
     possible cases include: snake_case (SNAKE_CASE), CamelCase (CAMEL_CASE),
@@ -70,14 +80,18 @@ def resolve_case_type(underscore, dash, all_caps, uppercase_ltr):
     :param uppercase_ltr:
     :return: the case type: CAMEL_CASE, CONSTANT_CASE, SNAKE_CASE, KEBAB_CASE, or NOT_A_CASE
     """
-    if underscore == True and all_caps == False and dash == False and uppercase_ltr == False:
+    if underscore and not all_caps and not dash and not uppercase_ltr:
         case = SNAKE_CASE
-    elif underscore == True and all_caps == True and dash == False:
+    elif underscore  and all_caps  and not dash:
         case = CONSTANT_CASE
-    elif dash == True and all_caps == False and underscore == False and uppercase_ltr == False:
+    elif dash and not all_caps and not underscore and not uppercase_ltr:
         case = KEBAB_CASE
-    elif underscore == False and dash == False and all_caps == False and uppercase_ltr == True:
+    elif not underscore and not dash and not all_caps and uppercase_ltr:
         case = CAMEL_CASE
+    elif one_word and all_caps:
+        case = CONSTANT_CASE
+    elif one_word and not uppercase_ltr:
+        case = LOWER_CASE_ONE
     else:
         case = NOT_A_CASE
     return case
@@ -100,6 +114,15 @@ def create_intermediary_list(case_string, case_type):
     >>> create_intermediary_list('SOME_CONSTANT_WORDS_FOR_U', 'constant')
     ['some', 'constant', 'words', 'for', 'u']
 
+    >>> create_intermediary_list('WORD', 'constant')
+    ['word']
+
+    >>> create_intermediary_list('Word', 'camel')
+    ['word']
+
+    >>> create_intermediary_list('word', 'lower')
+    ['word']
+
     """
     if case_type == SNAKE_CASE:
         intermediate_list = snake_to_list(case_string)
@@ -109,6 +132,8 @@ def create_intermediary_list(case_string, case_type):
         intermediate_list = kebab_to_list(case_string)
     elif case_type == CONSTANT_CASE:
         intermediate_list = constant_to_list(case_string)
+    elif case_type == LOWER_CASE_ONE:
+        intermediate_list = lower_to_list(case_string)
     return intermediate_list
 
 def snake_to_list(case_string):
@@ -125,6 +150,15 @@ def snake_to_list(case_string):
     list_of_words = case_string.split('_')
     return list_of_words
 
+def lower_to_list(case_string):
+    """Adds the lowercase word to a list
+
+    :param case_string:
+    :return:
+    """
+    list_of_words = [case_string]
+    return list_of_words
+
 def camel_to_list(case_string):
     """Transforms CamelCase string into a list of lowercase words
 
@@ -135,14 +169,14 @@ def camel_to_list(case_string):
 
     """
     list_of_words = []
-    y = 0
-    for i, char in enumerate(case_string):
-        if char.isupper() and not i == 0:
-            single_word = ''.join(case_string[y:i])
+    start_position = 0
+    for index, char in enumerate(case_string):
+        if char.isupper() and not index == 0:
+            single_word = ''.join(case_string[start_position:index])
             list_of_words.append(single_word.lower())
-            y = i
-        if i == len(case_string) - 1:
-            single_word = ''.join(case_string[y:i + 1])
+            start_position = index
+        if index == len(case_string) - 1:
+            single_word = ''.join(case_string[start_position:index + 1])
             list_of_words.append(single_word.lower())
     return list_of_words
 
@@ -167,11 +201,17 @@ def constant_to_list(case_string):
     :return:
     >>> constant_to_list('SOME_CONSTANT_WORDS_FOR_U')
     ['some', 'constant', 'words', 'for', 'u']
+
+    >>> constant_to_list('WORD')
+    ['word']
     """
     list_of_words = []
-    split_list_of_words = case_string.split('_')
-    for word in split_list_of_words:
-        list_of_words.append(word.lower())
+    if '_' in case_string:
+        split_list_of_words = case_string.split('_')
+        for word in split_list_of_words:
+            list_of_words.append(word.lower())
+    else:
+        list_of_words = [case_string.lower()]
     return list_of_words
 
 def list_to_snake(intermediate_list):
