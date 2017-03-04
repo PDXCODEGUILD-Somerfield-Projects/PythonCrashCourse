@@ -34,7 +34,9 @@ def print_row(list_of_rows, max_length_list):
 
 def main():
     # input from user: argv
-    file_name = 'sample.txt'
+    for arg1 in argv:
+        file_name = arg1
+
 
     # create the pretty print
     list_of_rows = make_a_list_of_rows(file_name)
