@@ -11,14 +11,6 @@ def read_file_to_list_of_moves(file_name):
     [4, 3, 5, 6, 4, 4, 5, 3, 6, 2, 7, 7, 3, 7, 4, 5, 6, 5]
     """
 
-def create_game_board_graphic():
-    """Produces string representation of connect four game board
-
-    :return:
-    >>>
-    '| | | | | | | |\\n| | | | | | | |\\n| | | | | | | |\\n| | | | | | | |\\n| | | | | | | |\\n| | | | | | | |'
-    """
-
 def read_move_from_list(list_of_moves):
     """Creates a dictionary of coordinates for each color for all moves
 
@@ -40,7 +32,7 @@ def read_move_from_list(list_of_moves):
         coordinate_to_color_dict.update({coordinates: color})
     return coordinate_to_color_dict
 
-def create_board_dictionary_of_moves(list_of_coordinates):
+def create_dictionary_of_moves(list_of_coordinates):
     current_matrix = OrderedDict({})
     for row in range(0, 6):
         current_row = row
@@ -51,7 +43,7 @@ def create_board_dictionary_of_moves(list_of_coordinates):
     return current_matrix
 
 
-def create_empty_game_board():
+def make_empty_matrix():
     """Place tokens in order on the game board
 
     :param token_placement:
@@ -69,14 +61,46 @@ def create_empty_game_board():
     return current_matrix
 
 
-def set_the_board(current_matrix):
+def make_print_string_for_matrix(current_matrix):
+    print_string = ''
     for row, col in current_matrix:
         current_row = row
         if col == 0:
-            print('\r')
-            print(end='|')
-        print(current_matrix.get((row, col), 0), end='|')
-    print('\n')
+            print_string += ('\r\n|')
+        print_string += (current_matrix.get((row, col), 0)) + '|'
+    print_string += '\n'
+    return print_string
+
+
+def main():
+    # file_name = 'connect-four-moves.txt'
+    # read_file_to_list_of_moves(file_name)
+    current_matrix = make_empty_matrix()
+    moves_matrix = create_dictionary_of_moves([4, 3, 5, 6, 4, 4, 5, 3, 6, 2, 7, 7, 3, 7, 4, 5, 6, 5])
+
+    for index, value in enumerate(moves_matrix.items()):
+        x = value
+        i = index
+        current_matrix[value[0]] = moves_matrix[value[0]]
+
+    print_string = make_print_string_for_matrix(current_matrix)
+    print(print_string)
+
+
+if __name__ == '__main__':
+    main()
+
+# current_print_str = ''
+# for row, col in current_matrix:
+#     if col == 0:
+#         current_print_str += ('\r\n')
+#         current_print_str += '|'
+#     current_print_str += (current_matrix.get((row, col), 0)) + '|'
+#     #print(current_print_str, end= '|')
+# current_print_str += '\n'
+# print(current_print_str)
+
+
 
 
 # def check_horizontal_four(tokens_placement):
