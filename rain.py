@@ -22,8 +22,9 @@ def read_file_to_list(file_name):
                 date_string = convert_date_to_std_format(rain_info[0])
                 # add reformatted date back into the string
                 rain_info[0] = date_string
-                rain_info[1] = int(rain_info[1])
-                rainfall_dict.update({rain_info[0]:rain_info[1]})
+                if len(rain_info) > 1:
+                    rain_info[1] = int(rain_info[1])
+                    rainfall_dict.update({rain_info[0]:rain_info[1]})
     return rainfall_dict
 
 def convert_date_to_std_format(date_string):
@@ -40,6 +41,17 @@ def convert_date_to_std_format(date_string):
     return std_date_string
 
 def day_with_most_rain(rainfall_dict):
+    """Determines the day with most rain and returns list of (day, amount)
+
+    :param rainfall_dict:
+    :return: list of amount of max rain and date(s)
+    >>> day_with_most_rain({'2016-3-30': 0, '2016-3-29': 0, '2016-3-28': 2, '2016-3-27': 5, '2016-3-26': 5, '2016-3-25': 0, '2016-3-24': 6})
+    ['6', '2016-3-24']
+
+    >>> day_with_most_rain({'2016-3-30': 0, '2016-3-29': 10, '2016-3-28': 2, '2016-3-27': 5, '2016-3-26': 10, '2016-3-25': 0, '2016-3-24': 6})
+    ['10', '2016-3-29', '2016-3-26']
+
+    """
     rainfall_tenths = []
     for tenths in rainfall_dict.values():
         rainfall_tenths.append(tenths)
@@ -54,15 +66,56 @@ def day_with_most_rain(rainfall_dict):
 
     return max_rain_with_dates
 
-def year_with_most_rain(rainfall_dict):
+def list_years_by_rainfall(rainfall_dict):
+    """Creates a list of lists of years and their total rainfall
+
+    :param rainfall_dict:
+    :return:
+    >>> list_years_by_rainfall({'2014-3-30': 0, '2012-3-29': 10, '2015-3-28': 2, '2016-3-27': 5, '2011-3-26': 7, '2012-3-25': 7, '2007-3-24': 6})
+    [['2007', 6], ['2011', 7], ['2012', 17], ['2014', 0], ['2015', 2], ['2016', 5]]
+    """
+    rain_by_year_list = []
+    for date, tenths in rainfall_dict.items():
+        year = date[:4]
+        if len(rain_by_year_list) < 1:
+            rain_by_year_list.append([year, tenths])
+        else:
+            for index, list in enumerate(rain_by_year_list):
+                in_list = False
+                if year in list[0]:
+                    rain_by_year_list[index][1] += tenths
+                    in_list = True
+                    break
+            if in_list == False:
+                rain_by_year_list.append([year, tenths])
+    rain_by_year_list.sort()
+    return rain_by_year_list
+
+def year_with_most_rain(rain_by_year_list):
+    """Determines the year on record with the most rainfall
+
+    :param rainfall_dict:
+    :return: list with max amount of rainfall, year(s) with that max amount
+    >>> year_with_most_rain([['2007', 6], ['2011', 7], ['2012', 17], ['2014', 0], ['2015', 2], ['2016', 5]])
+    [17, '2012']
+    """
+    max_rainfall = 0
+    years_with_max = []
+    for index, list in enumerate(rain_by_year_list):
+        if list[1] > max_rainfall:
+            max_rainfall = list[1]
+    for list in rain_by_year_list:
+        if list[1] == max_rainfall:
+            years_with_max.append(list[0])
+    max_rain_and_year = [max_rainfall, years_with_max]
+    return max_rain_and_year
 
 
 
 def main():
 
-    file_name = 'little_rain.txt'
+    file_name = 'rain.txt'
     rainfall_dict = read_file_to_list(file_name)
-    print(rainfall_dict)
 
     max_rain_with_dates = day_with_most_rain(rainfall_dict)
     if len(max_rain_with_dates) == 2:
@@ -73,6 +126,10 @@ def main():
         for index in max_rain_with_dates[1:]:
             print(index + ', ', end='')
         print(' with ' + max_rain_with_dates[0] + ' tenths of an inch of rain')
+
+    list_of_years_and_rainfall = list_years_by_rainfall(rainfall_dict)
+    max_rainfall_yr = year_with_most_rain(list_of_years_and_rainfall)
+    print(max_rainfall_yr)
 
 
 
