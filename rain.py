@@ -19,24 +19,32 @@ def read_file_to_list(file_name):
                 s = info_match.start()
                 e = info_match.end()
                 rain_info = (line[s:e].split())
-                month_match = re.search('\w{3}', rain_info[0])
-                if month_match != None:
-                    m_s = month_match.start()
-                    m_e = month_match.end()
-                # assigns corresponding number to month (ex> MAR : 3)
-                month = month_dict.get((rain_info[0])[m_s:m_e])
-                # add month 'number' back into the string
-
-                rain_info = [r.replace(('\w{3}', month)) for r in rain_info]
-                #date_time_obj = datetime.strptime(rain_info[0], '%d')
-                x = rain_info
+                date_string = convert_date_to_std_format(rain_info[0])
+                # add reformatted date back into the string
+                rain_info[0] = date_string
                 rainfall_dict.update({rain_info[0]:rain_info[1]})
-
-                # rain_info.append(tuple((line[s:e]).split()))
     return rainfall_dict
 
+def convert_date_to_std_format(date_string):
+    month_match = re.search('\w{3}', date_string)
+    if month_match != None:
+        m_s = month_match.start()
+        m_e = month_match.end()
+        month_str = date_string[m_s:m_e]
+    # assigns corresponding number to month (ex> MAR : 3)
+    month_num = str(month_dict.get((date_string)[m_s:m_e]))
+    year = date_string[-4:]
+    day = date_string[:2]
+    std_date_string = year + '-' + month_num + '-' + day
+    return std_date_string
 
+def day_of_year_with_most_avg_rainfall(rainfall_dict):
+    
 
+def main():
 
-file_name = 'little_rain.txt'
-print(read_file_to_list(file_name))
+    file_name = 'little_rain.txt'
+    print(read_file_to_list(file_name))
+
+if __name__ == '__main__':
+    main()
