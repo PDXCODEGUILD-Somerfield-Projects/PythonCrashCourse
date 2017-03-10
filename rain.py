@@ -7,10 +7,7 @@ month_dict = {'JAN' : 1, 'FEB' : 2, 'MAR' : 3, 'APR' : 4, 'MAY' : 5, 'JUN' : 6, 
 
 def read_file_to_list(file_name):
     """Opens rain-data file and creates a list of dates with corresponding rainfall
-<<<<<<< HEAD
-=======
 
->>>>>>> connect-four-one
     :param file_name:
     :return: dictionary {date : rainfall}
     """
@@ -35,10 +32,7 @@ def read_file_to_list(file_name):
 
 def convert_date_to_std_format(date_string):
     """Takes date from text file and changes it to YYYY-M-DD format
-<<<<<<< HEAD
-=======
 
->>>>>>> connect-four-one
     :param date_string:
     :return: date string in YYYY-M-DD format
     """
@@ -59,23 +53,17 @@ def convert_date_to_std_format(date_string):
 
 def day_with_most_rain(rainfall_dict):
     """Determines the day with most rain and returns list of (day, amount)
-<<<<<<< HEAD
-=======
 
->>>>>>> connect-four-one
     :param rainfall_dict:
     :return: list of amount of max rain and date(s)
     >>> day_with_most_rain({'2016-3-30': 0, '2016-3-29': 0, '2016-3-28': 2, '2016-3-27': 5, '2016-3-26': 5, '2016-3-25': 0, '2016-3-24': 6})
     ['6', '2016-3-24']
-<<<<<<< HEAD
-    >>> day_with_most_rain({'2016-3-30': 0, '2016-3-29': 10, '2016-3-28': 2, '2016-3-27': 5, '2016-3-26': 10, '2016-3-25': 0, '2016-3-24': 6})
-    ['10', '2016-3-29', '2016-3-26']
-=======
 
     >>> day_with_most_rain({'2016-3-30': 0, '2016-3-29': 10, '2016-3-28': 2, '2016-3-27': 5, '2016-3-26': 10, '2016-3-25': 0, '2016-3-24': 6})
     ['10', '2016-3-29', '2016-3-26']
 
->>>>>>> connect-four-one
+    >>> day_with_most_rain({'2016-3-30': 0, '2016-3-29': 10, '2016-3-28': 2, '2016-3-27': 5, '2016-3-26': 10, '2016-3-25': 0, '2016-3-24': 6})
+    ['10', '2016-3-29', '2016-3-26']
     """
     # finds the highest total inches for one day
     rainfall_inches = []
@@ -96,10 +84,7 @@ def day_with_most_rain(rainfall_dict):
 
 def list_years_by_rainfall(rainfall_dict):
     """Creates a list of lists of years and their total rainfall
-<<<<<<< HEAD
-=======
 
->>>>>>> connect-four-one
     :param rainfall_dict:
     :return:
     >>> list_years_by_rainfall({'2014-3-30': 0, '2012-3-29': 10, '2015-3-28': 2, '2016-3-27': 5, '2011-3-26': 7, '2012-3-25': 7, '2007-3-24': 6})
@@ -124,10 +109,7 @@ def list_years_by_rainfall(rainfall_dict):
 
 def year_with_most_rain(rain_by_year_list):
     """Determines the year on record with the most rainfall
-<<<<<<< HEAD
-=======
 
->>>>>>> connect-four-one
     :param rainfall_dict:
     :return: list with max amount of rainfall, year(s) with that max amount
     >>> year_with_most_rain([['2007', 6], ['2011', 7], ['2012', 17], ['2014', 0], ['2015', 2], ['2016', 5]])
@@ -179,8 +161,6 @@ def main():
 
 
 if __name__ == '__main__':
-<<<<<<< HEAD
     main()
-=======
-    main()
->>>>>>> connect-four-one
+
+
