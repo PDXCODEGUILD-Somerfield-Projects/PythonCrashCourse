@@ -1,3 +1,0 @@
-import rectangle
-import point
-
