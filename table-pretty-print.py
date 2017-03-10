@@ -111,7 +111,7 @@ def main():
         list_of_rows = make_a_list_of_rows_from_txt(file_name)
 
     file_name.close()
-    
+
     max_length_list = get_max_length_of_columns(list_of_rows)
     table_string = create_table_string(list_of_rows, max_length_list)
 
