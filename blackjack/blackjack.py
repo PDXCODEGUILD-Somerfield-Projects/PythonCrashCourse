@@ -118,11 +118,49 @@ class Hand(object):
         return hand_score
 
 
-#         def is_over_twenty_one(self):
-#             return is_over
-#
-#         def add_hand(self, user_card_list):
-#             return new_hand
+    def is_over_twenty_one(self):
+        """
+
+        :param self:
+        :return:
+        >>> Hand([('Ace', 'Spades'), ('Queen', 'Spades')]).is_over_twenty_one()
+        False
+        >>> Hand([('Queen', 'Spades'), ('9', 'Diamonds'), ('8', 'Hearts')]).is_over_twenty_one()
+        True
+        >>> Hand([('King', 'Hearts'), ('2', 'Diamonds')]).is_over_twenty_one()
+        False
+        """
+        is_over = False
+        score = self.score_hand()
+        if int(score) > 21:
+            is_over = True
+        return is_over
+
+    def add_hand(self, user_card_str):
+        """
+
+        :param user_card_list:
+        :return:
+
+        >>> Hand().add_hand('10S, QC, 1D, 2H')
+        [('10', 'Spades'), ('Queen', 'Clubs'), ('Aces', 'Diamonds'), ('2', 'Hearts')]
+        """
+        # hand = '10S, QC, 1D, 2H'
+        suit_dict = {'S': 'Spades', 'C': 'Clubs', 'D': 'Diamonds', 'H': 'Hearts'}
+        rank_dict = {'A': 'Aces', 'J': 'Jack', 'Q': 'Queen', 'K': 'King'}
+        for card in user_card_str.split(','):
+            card = card.strip()
+            if card[0].isdigit():
+                if card[1].isdigit():
+                    rank = str(card[:2])
+                else:
+                    rank = str(card[:1])
+            else:
+                rank = rank_dict.get(card[0])
+            s = card[len(card) -1]
+            suit = suit_dict.get(card[len(card)-1])
+            c = Card(rank, suit)
+            self.card_list.append(c)
 #
 class Deck(object):
     """Deck of playing cards in a list"""
@@ -153,8 +191,10 @@ class Deck(object):
 #         def is_deck_empty(self):
 #             return is_empty
 def main():
-    score = Hand([('Ace', 'Spades'), ('7', 'Diamonds'), ('Queen', 'Hearts')]).score_hand()
-    print(score)
+    hand = Hand([])
+
+    hand.add_hand('10S, QC, 1D, 2H')
+    print(hand)
 
 if __name__ == '__main__':
     main()
