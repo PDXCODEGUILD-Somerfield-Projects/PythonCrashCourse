@@ -1,3 +1,5 @@
+import random
+
 SUIT = ('Clubs', 'Diamonds', 'Hearts', 'Spades')
 RANK = ('Ace', '2', '3', '4', '5', '6', '7', '8', '9', 'Jack', 'Queen', 'King')
 
@@ -57,11 +59,13 @@ class Hand(object):
     #     card_2 = Card(card_2[0], card_2[1])
     #     self.card_list = [card_1, card_2]
 
-    def __init__(self, card_list_in):
-        self.card_list =[]
-        for card in card_list_in:
-            new_card = Card(card[0], card[1])
-            self.card_list.append(new_card)
+    def __init__(self, card_list_in=None):
+        self.card_list = []
+        if card_list_in is not None:
+            for card in card_list_in:
+                new_card = Card(card[0], card[1])
+                self.card_list.append(new_card)
+
 
     def __repr__(self):
         """
@@ -139,11 +143,13 @@ class Hand(object):
     def add_hand(self, user_card_str):
         """
 
-        :param user_card_list:
+        :param user_card_str:
         :return:
-
-        >>> Hand().add_hand('10S, QC, 1D, 2H')
+        >>> Hand().add_hand('10S, QC, AD, 2H')
         [('10', 'Spades'), ('Queen', 'Clubs'), ('Aces', 'Diamonds'), ('2', 'Hearts')]
+
+        # >>> Hand().add_hand('10S, QC, AD, 2H')
+        # [('10', 'Spades'), ('Queen', 'Clubs'), ('Aces', 'Diamonds'), ('2', 'Hearts')]
         """
         # hand = '10S, QC, 1D, 2H'
         suit_dict = {'S': 'Spades', 'C': 'Clubs', 'D': 'Diamonds', 'H': 'Hearts'}
@@ -161,15 +167,19 @@ class Hand(object):
             suit = suit_dict.get(card[len(card)-1])
             c = Card(rank, suit)
             self.card_list.append(c)
+        return self.card_list
 #
 class Deck(object):
     """Deck of playing cards in a list"""
 
-    def __init__(self):
-        self.deck_list = []
-        for suit in SUIT:
-            for rank in RANK:
-                self.deck_list.append(Card(rank, suit))
+    def __init__(self, card_list=None):
+        if card_list is not None:
+            self.deck_list = card_list
+        else:
+            self.deck_list = []
+            for suit in SUIT:
+                for rank in RANK:
+                    self.deck_list.append(Card(rank, suit))
 
     def __repr__(self):
         """
@@ -177,24 +187,56 @@ class Deck(object):
         :return:
         >>> x = Deck()
         >>> x.__repr__()
-        [('Ace', 'Clubs'), ('2', 'Clubs'), ('3', 'Clubs'), ('4', 'Clubs'), ('5', 'Clubs'), ('6', 'Clubs'), ('7', 'Clubs'), ('8', 'Clubs'), ('9', 'Clubs'), ('Jack', 'Clubs'), ('Queen', 'Clubs'), ('King', 'Clubs'), ('Ace', 'Diamonds'), ('2', 'Diamonds'), ('3', 'Diamonds'), ('4', 'Diamonds'), ('5', 'Diamonds'), ('6', 'Diamonds'), ('7', 'Diamonds'), ('8', 'Diamonds'), ('9', 'Diamonds'), ('Jack', 'Diamonds'), ('Queen', 'Diamonds'), ('King', 'Diamonds'), ('Ace', 'Hearts'), ('2', 'Hearts'), ('3', 'Hearts'), ('4', 'Hearts'), ('5', 'Hearts'), ('6', 'Hearts'), ('7', 'Hearts'), ('8', 'Hearts'), ('9', 'Hearts'), ('Jack', 'Hearts'), ('Queen', 'Hearts'), ('King', 'Hearts'), ('Ace', 'Spades'), ('2', 'Spades'), ('3', 'Spades'), ('4', 'Spades'), ('5', 'Spades'), ('6', 'Spades'), ('7', 'Spades'), ('8', 'Spades'), ('9', 'Spades'), ('Jack', 'Spades'), ('Queen', 'Spades'), ('King', 'Spades')]
+        "[('Ace', 'Clubs'), ('2', 'Clubs'), ('3', 'Clubs'), ('4', 'Clubs'), ('5', 'Clubs'), ('6', 'Clubs'), ('7', 'Clubs'), ('8', 'Clubs'), ('9', 'Clubs'), ('Jack', 'Clubs'), ('Queen', 'Clubs'), ('King', 'Clubs'), ('Ace', 'Diamonds'), ('2', 'Diamonds'), ('3', 'Diamonds'), ('4', 'Diamonds'), ('5', 'Diamonds'), ('6', 'Diamonds'), ('7', 'Diamonds'), ('8', 'Diamonds'), ('9', 'Diamonds'), ('Jack', 'Diamonds'), ('Queen', 'Diamonds'), ('King', 'Diamonds'), ('Ace', 'Hearts'), ('2', 'Hearts'), ('3', 'Hearts'), ('4', 'Hearts'), ('5', 'Hearts'), ('6', 'Hearts'), ('7', 'Hearts'), ('8', 'Hearts'), ('9', 'Hearts'), ('Jack', 'Hearts'), ('Queen', 'Hearts'), ('King', 'Hearts'), ('Ace', 'Spades'), ('2', 'Spades'), ('3', 'Spades'), ('4', 'Spades'), ('5', 'Spades'), ('6', 'Spades'), ('7', 'Spades'), ('8', 'Spades'), ('9', 'Spades'), ('Jack', 'Spades'), ('Queen', 'Spades'), ('King', 'Spades')]"
 
         """
-        return self.deck_list
+        return '{!r}'.format(
+            self.deck_list
+        )
 
-#         def return_shuffled(self):
-#             return shuffled_list
-#
-#         def draw_a_card(self):
-#             return top_card
-#
-#         def is_deck_empty(self):
-#             return is_empty
+
+    def return_shuffled(self):
+        """
+
+        :return:
+
+        """
+        random.shuffle(self.deck_list)
+
+
+    def draw_a_card(self):
+        """
+
+        :return:
+        >>> Deck([('Ace', 'Clubs'), ('4', 'Spades'), ('Queen', 'Clubs'), ('Jack', 'Diamonds')]).draw_a_card()
+        ('Ace', 'Clubs')
+        """
+        top_card = self.deck_list.pop(0)
+        return top_card
+
+    def is_deck_empty(self):
+        """
+
+        :return:
+        >>> Deck([('3', 'Clubs'), ('4', 'Clubs'), ('5', 'Clubs'), ('6', 'Clubs')]).is_deck_empty()
+        False
+        >>> Deck([]).is_deck_empty()
+        True
+        """
+        is_empty = False
+        if not self.deck_list:
+            is_empty = True
+        return is_empty
+
+
 def main():
-    hand = Hand([])
-
-    hand.add_hand('10S, QC, 1D, 2H')
-    print(hand)
+    deck = Deck()
+    deck.return_shuffled()
+    print(deck.__repr__())
+    while not deck.is_deck_empty():
+        top_card = deck.draw_a_card()
+        print(top_card)
+    print(deck.__repr__())
 
 if __name__ == '__main__':
     main()
