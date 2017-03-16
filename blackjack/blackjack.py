@@ -204,15 +204,20 @@ class Deck(object):
         random.shuffle(self.deck_list)
 
 
-    def draw_a_card(self):
+    def draw_a_card(self, num_cards=1):
         """
 
         :return:
         >>> Deck([('Ace', 'Clubs'), ('4', 'Spades'), ('Queen', 'Clubs'), ('Jack', 'Diamonds')]).draw_a_card()
-        ('Ace', 'Clubs')
+        [('Ace', 'Clubs')]
+        >>> Deck([('Ace', 'Clubs'), ('4', 'Spades'), ('Queen', 'Clubs'), ('Jack', 'Diamonds')]).draw_a_card(2)
+        [('Ace', 'Clubs'), ('4', 'Spades')]
         """
-        top_card = self.deck_list.pop(0)
-        return top_card
+        top_cards = []
+        for num in range(0, num_cards):
+            top_cards.append(self.deck_list.pop(0))
+
+        return top_cards
 
     def is_deck_empty(self):
         """
