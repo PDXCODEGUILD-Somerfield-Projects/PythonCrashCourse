@@ -4,13 +4,13 @@ _token_coords = [
     (0, 1, 'O'),
 ]
 """
+import list_board
 
 class CoordsTTTBoard(object):
     """Builds a board row by row from a list of tuples"""
 
     def __init__(self, board=None):
-        """Builds an empty board list if none exists"""
-
+        """Builds an empty list of token moves if none exists"""
 
         if not board:
             # if not -- build empty list:
@@ -34,44 +34,38 @@ class CoordsTTTBoard(object):
         :return:
         >>> str(CoordsTTTBoard([(1, 1, 'X'), (0, 1, 'O')]))
         '| |O| |\\r\\n| |X| |\\r\\n| | | |\\r\\n'
+        >>> str(CoordsTTTBoard())
+        '| | | |\\r\\n| | | |\\r\\n| | | |\\r\\n'
         """
-        pretty_string = ''
-        _rows = []
-        for row in range(0, 3):
-            _col = []
-            for col in range(0, 3):
-                _col.append(None)
+        # function from list_board to create list of empty rows
+        _row_list = list_board.build_empty_list_board(None)
+        # fills the empty board with moves
         for move in self._token_coords:
             move_row = move[0]
             move_col = move[1]
             token = move[2]
-            _rows[move_row][move_col] = token
-        for row in _rows:
-            pretty_string += '|'
-            for col in row:
-                if col is None:
-                    pretty_string += ' |'
-                else:
-                    pretty_string += col + '|'
-            pretty_string += '\r\n'
+            _row_list[move_row][move_col] = token
+        # creates a string representation of the board from list_board function
+        pretty_string = list_board.build_pretty_string(_row_list)
         return pretty_string
 
+    def place_token(self, move):
+        """Add the token move to the list of moves
 
-        # self._rows = []
-        # _col = []
-        # if not board:
-        #     # if not -- build empty list:
-        #     for row in range(0, 3):
-        #         _col = []
-        #         for col in range(0, 3):
-        #             _col.append(' ')
-        #         self._rows.append(_col)
-        # else:
-        #     # if the board list exists
-        #     self._rows = board
+        :param move:
+        :return:
+        >>> CoordsTTTBoard().place_token((1, 1, 'X'))
+        [(1, 1, 'X')]
+        >>> CoordsTTTBoard([(1, 2, 'X'), (0, 1, 'O')]).place_token((1, 1, 'X'))
+        [(1, 2, 'X'), (0, 1, 'O'), (1, 1, 'X')]
+        """
+        self._token_coords.append(move)
+        return self._token_coords
+
+
 
 def main():
-    pass
+    str(CoordsTTTBoard([(1, 1, 'X'), (0, 1, 'O')]))
 
 
 if __name__ == '__main__':
