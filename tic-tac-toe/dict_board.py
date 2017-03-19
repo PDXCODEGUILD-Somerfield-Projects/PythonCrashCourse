@@ -1,9 +1,10 @@
-"""
+"""Creates a tic-tac-toe board in a dictionary format:
 _coord_to_token = {
     (0, 0): 'X',
     'a1': 'O',
     '02': None,
     }
+Includes functions to place a token and calculate a winner
 """
 
 class DictTTTBoard(object):
@@ -23,12 +24,13 @@ class DictTTTBoard(object):
             # if the board list exists
             self._coord_to_token = board
 
+
     def __repr__(self):
         """Shows the board in a dictionary represenation
 
         coordinate = key,  token = value
 
-        :return:
+        :return: dictionary format representation of the board
         >>> DictTTTBoard().__repr__()
         'DictTTTBoard({(0, 0): None, (0, 1): None, (0, 2): None, (1, 0): None, (1, 1): None, (1, 2): None, (2, 0): None, (2, 1): None, (2, 2): None})'
         """
@@ -36,10 +38,11 @@ class DictTTTBoard(object):
             self._coord_to_token
         )
 
+
     def __str__(self):
         """Pretty-print representation of the board
 
-        :return:
+        :return: printable string representation of the board in a matrix
         >>> str(DictTTTBoard({(0, 0): 'X', (0, 1): None, (0, 2): None, (1, 0): 'O', (1, 1): None, (1, 2): 'X', (2, 0): None, (2, 1): None, (2, 2): 'O'}))
         '|X| | |\\r\\n|O| |X|\\r\\n| | |O|\\r\\n'
         >>> str(DictTTTBoard())
@@ -58,12 +61,13 @@ class DictTTTBoard(object):
         pretty_string += '\r\n'
         return pretty_string
 
+
     def place_token(self, x, y, token):
         """Adds the token to the x,y coordinate in the board dictionary
 
-        :param x:
-        :param y:
-        :param token:
+        :param x: x coordinate (row)
+        :param y: y coordinate (col)
+        :param token: X or O
         :return:
         >>> DictTTTBoard().place_token(1, 2, 'X')
         {(0, 0): None, (0, 1): None, (0, 2): None, (1, 0): None, (1, 1): None, (1, 2): None, (2, 0): None, (2, 1): 'X', (2, 2): None}
@@ -76,12 +80,13 @@ class DictTTTBoard(object):
         self._coord_to_token[(board_row, board_col)] = token
         return self._coord_to_token
 
+
     def calc_winner(self):
         """Evaluates the board to return the winner string 'X' or 'O'
 
         If no winner, returns None
 
-        :return:
+        :return: 'X' or 'O' -- or None
         >>> DictTTTBoard({(0, 0): None, (0, 1): 'X', (0, 2): None, (1, 0): 'O', (1, 1): 'O', (1, 2): 'O', (2, 0): 'O', (2, 1): 'X', (2, 2): 'X'}).calc_winner()
         'O'
         >>> DictTTTBoard({(0, 0): None, (0, 1): 'X', (0, 2): 'O', (1, 0): None, (1, 1): 'X', (1, 2): None, (2, 0): None, (2, 1): 'X', (2, 2): 'O'}).calc_winner()

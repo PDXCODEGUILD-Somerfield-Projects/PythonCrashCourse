@@ -4,39 +4,10 @@ _rows = [
 ['O', 'X', ' '],
 ['  ', '  ', 'O'],
 ]
+
+Includes functions to place a token and calculate a winner
 """
-def build_empty_list_board(spacer):
-    """Builds an empty board as a list of lists
-
-    :param spacer: ' ' or None to represent blank space on board
-    :return: the 'empty' board as a list of lists
-    """
-    _rows = []
-    _cols = []
-    for row in range(0, 3):
-        _cols = []
-        for col in range(0, 3):
-            _cols.append(spacer)
-        _rows.append(_cols)
-    return _rows
-
-def build_pretty_string(row_list):
-    """Creates a string representation from a list of rows
-
-    :param row_list: list of row lists
-    :return: string representation of the board
-    """
-    pretty_string = ''
-    for row in row_list:
-        pretty_string += '|'
-        for col in row:
-            if col is None:
-                pretty_string += ' |'
-            else:
-                pretty_string += col + '|'
-        pretty_string += '\r\n'
-    return pretty_string
-
+import board_func
 
 
 class ListTTTBoard(object):
@@ -46,17 +17,16 @@ class ListTTTBoard(object):
         """Builds an empty board list if none exists"""
         if not board:
             # if not -- build empty list:
-            self._rows = build_empty_list_board(' ')
+            self._rows = board_func.build_empty_list_board(' ')
         else:
             # if the board list exists
             self._rows = board
 
 
-
     def __repr__(self):
         """Shows the tic-tac-toe board in list of lists representation
 
-        :return:
+        :return: list format representation of the board
         >>> ListTTTBoard().__repr__()
         "ListTTTBoard([[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']])"
         >>> ListTTTBoard([['O', ' ', ' '], [' ', 'X', ' '], ['O', ' ', 'X']])
@@ -66,29 +36,28 @@ class ListTTTBoard(object):
             self._rows
         )
 
+
     def __str__(self):
         """Pretty-print version of the board
 
-        :return:
+        :return: printable string representation of the board as a matrix
         >>> str(ListTTTBoard([['O', ' ', ' '], [' ', 'X', ' '], ['O', ' ', 'X']]))
         '|O| | |\\r\\n| |X| |\\r\\n|O| |X|\\r\\n'
         >>> str(ListTTTBoard())
         '| | | |\\r\\n| | | |\\r\\n| | | |\\r\\n'
         """
         # creates string representation of the board for printing
-        pretty_string = build_pretty_string(self._rows)
+        pretty_string = board_func.build_pretty_string(self._rows)
         return pretty_string
-
-
 
 
     def place_token(self, x, y, token):
         """Places an X/O token on the board by x, y coordinates
 
-        :param x:
-        :param y:
-        :param token:
-        :return:
+        :param x: x coordinate (row)
+        :param y: y coordinate (col)
+        :param token: X, O -- or ' ' if empty
+        :return: updates the board
         >>> ListTTTBoard([['O', ' ', ' '], [' ', 'X', ' '], ['O', ' ', 'X']]).place_token(1, 2, 'X')
         [['O', ' ', ' '], [' ', 'X', ' '], ['O', 'X', 'X']]
         >>> ListTTTBoard().place_token(1, 1, 'O')
@@ -106,7 +75,7 @@ class ListTTTBoard(object):
 
         If no winner, returns None
 
-        :return:
+        :return: 'X' or 'O' -- or None
          >>> ListTTTBoard([['O', 'O', 'O'], ['O', 'X', ' '], ['X', ' ', 'X']]).calc_winner()
          'O'
          >>> ListTTTBoard([['X', ' ', ' '], ['X', 'O', ' '], ['X', 'O', 'O']]).calc_winner()
@@ -120,12 +89,12 @@ class ListTTTBoard(object):
         """
         # horizontal win
         for row in self._rows:
-            if len(set(row)) == 1:
+            if len(set(row)) == 1 and row[0] is not ' ':
                 return row[0]
         # vertical win
         col_to_rows = zip(*self._rows)
         for col in col_to_rows:
-            if len(set(col)) == 1:
+            if len(set(col)) == 1 and col[0] is not ' ':
                 return col[0]
         # diagonal win
         col_index = len(self._rows[0])
@@ -135,9 +104,9 @@ class ListTTTBoard(object):
         front_diag = []
         for i in range(col_index - 1, -1, -1):
             front_diag += self._rows[index - i][i]
-        if len(set(back_diag)) == 1:
+        if len(set(back_diag)) == 1 and back_diag[0] is not ' ':
             return back_diag[0]
-        if len(set(front_diag)) == 1:
+        if len(set(front_diag)) == 1 and front_diag[0] is not ' ':
             return front_diag[0]
         return None
 
