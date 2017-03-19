@@ -63,9 +63,65 @@ class CoordsTTTBoard(object):
         return self._token_coords
 
 
+    def calc_winner(self):
+        """Calculates winner from token coordinates
+
+        :return: winner as string 'X', 'O', or None
+        >>> CoordsTTTBoard().calc_winner()
+        None
+        >>> CoordsTTTBoard([(1, 1, 'X'), (0, 2, 'O'), (0, 1, 'X'), (2, 2, 'O'), (2, 1, 'X')])
+        X
+        """
+        SQR = 3
+        # for move in board:
+        # in each row
+        token_list = ['X', 'O']
+        for index in range(SQR):
+            # checks for horizontal matches through an index of rows
+            filtered_x = []
+            filtered_x = [tup for tup in self._token_coords if tup[0] == index]
+            if len(filtered_x) >= SQR:
+                for i in range(len(token_list)):
+                    token = token_list[i]
+                    filtered_x_token = [tup for tup in filtered_x if tup[2] == token]
+                    if len(filtered_x_token) >= SQR:
+                        return token
+            # checks for vertical matches through an index of columns
+            filtered_y = []
+            filtered_y = [tup for tup in self._token_coords if tup[1] == index]
+            if len(filtered_y) >= SQR:
+                for i in range(len(token_list)):
+                    token = token_list[i]
+                    filtered_y_token = [tup for tup in filtered_y if tup[2] == token]
+                    if len(filtered_y_token) >= SQR:
+                        return token
+
+        # check for front diagonal by checking row against col
+        front_diag = [tup for tup in self._token_coords if tup[1] == (abs(tup[0] - (SQR - 1)))]
+        if len(front_diag) >= SQR:
+            for i in range(len(token_list)):
+                token = token_list[i]
+                filtered_front_diag_token = [tup for tup in front_diag if tup[2] == token]
+                if len(filtered_front_diag_token) >= SQR:
+                    return token
+
+        # checks for back diagonal by comparing row to col
+        back_diag = [tup for tup in self._token_coords if tup[0] == tup[1]]
+        if len(back_diag) >= SQR:
+            for i in range(len(token_list)):
+                token = token_list[i]
+                filtered_back_diag_token = [tup for tup in back_diag if tup[2] == token]
+                if len(filtered_back_diag_token) >= SQR:
+                    return token
+        return None
+
+
+
+
+
 
 def main():
-    str(CoordsTTTBoard([(1, 1, 'X'), (0, 1, 'O')]))
+    print(CoordsTTTBoard([(1, 1, 'X'), (0, 2, 'O'), (0, 1, 'X'), (2, 2, 'O'), (2, 1, 'X')]).calc_winner())
 
 
 if __name__ == '__main__':

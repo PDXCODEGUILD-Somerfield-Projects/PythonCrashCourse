@@ -38,14 +38,6 @@ def build_pretty_string(row_list):
     return pretty_string
 
 
-# for row in _rows:
-#     pretty_string += '|'
-#     for col in row:
-#         if col is None:
-#             pretty_string += ' |'
-#         else:
-#             pretty_string += col + '|'
-#     pretty_string += '\r\n'
 
 class ListTTTBoard(object):
     """Builds a board row by row from a list"""
