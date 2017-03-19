@@ -82,20 +82,55 @@ class DictTTTBoard(object):
         If no winner, returns None
 
         :return:
-        >>> DictTTTBoard({(0, 0): 'X', (0, 1): None, (0, 2): None, (1, 0): 'O', (1, 1): 'O', (1, 2): 'O', (2, 0): None, (2, 1): 'X', (2, 2): 'X'}).calc_winner()
+        >>> DictTTTBoard({(0, 0): None, (0, 1): 'X', (0, 2): None, (1, 0): 'O', (1, 1): 'O', (1, 2): 'O', (2, 0): 'O', (2, 1): 'X', (2, 2): 'X'}).calc_winner()
         'O'
-        """
-        # horizontal win
-        row_set = []
-        for row, col in sorted(self._coord_to_token.keys()):
-            if col == 0 and row != 0:
-                if len(set(row_set)) == 1 and row_set[0] != None:
-                    return row_set[0]
-                row_set = []
-            row_set.append(self._coord_to_token.get((row, col), None))
-        # vertical win
+        >>> DictTTTBoard({(0, 0): None, (0, 1): 'X', (0, 2): 'O', (1, 0): None, (1, 1): 'X', (1, 2): None, (2, 0): None, (2, 1): 'X', (2, 2): 'O'}).calc_winner()
+        'X'
+        >>> DictTTTBoard({(0, 0): None, (0, 1): 'X', (0, 2): 'O', (1, 0): None, (1, 1): 'O', (1, 2): 'X', (2, 0): 'O', (2, 1): 'X', (2, 2): None}).calc_winner()
+        'O'
+        >>> DictTTTBoard({(0, 0): 'X', (0, 1): None, (0, 2): 'O', (1, 0): None, (1, 1): 'X', (1, 2): None, (2, 0): 'O', (2, 1): 'O', (2, 2): 'X'}).calc_winner()
+        'X'
+        >>> DictTTTBoard({(0, 0): 'X', (0, 1): None, (0, 2): 'O', (1, 0): None, (1, 1): None, (1, 2): None, (2, 0): 'O', (2, 1): 'O', (2, 2): 'X'}).calc_winner()
 
-        # diagonal win
+        """
+        tokens = ['X', 'O']
+        # runs through token coordinates for X and then O
+        for token in tokens:
+            x = token
+            list_token = []
+            # create accumulative list of x and y coordinates
+            list_token_x = []
+            list_token_y = []
+            # accumulative lists of diagonal coordinates
+            list_token_diag1 = []
+            list_token_diag2 = []
+            # runs through each coord, token in dictionary
+            # and adds coords to the list if they match
+            for tuple, tok in self._coord_to_token.items():
+                if token == tok:
+                    list_token += [tuple]
+                    # list of possible horizontal win coordinates
+                    list_token_x += [tuple[0]]
+                    # list of possible vertical win coordinates
+                    list_token_y += [tuple[1]]
+                    # list of possible back diagonal win coordinates
+                    if tuple[0] == tuple[1]:
+                        list_token_diag1 += [tuple]
+                    # list of possible front diagonal win coordinates
+                    if tuple[1] == abs(tuple[0] - 2):
+                        list_token_diag2 += [tuple]
+                    # evaluate lists for three coordinates in a line
+                    for i in range(len(list_token_x)):
+                        if list_token_x.count(i) > 2:
+                            return token
+                        if list_token_y.count(i) > 2:
+                            return token
+                    if len(list_token_diag1) > 2:
+                        return token
+                    if len(list_token_diag2) > 2:
+                        return token
+        # if there is no winner, returns value of None
+        return None
 
 
 def main():

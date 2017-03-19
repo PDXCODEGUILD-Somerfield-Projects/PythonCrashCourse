@@ -68,9 +68,15 @@ class CoordsTTTBoard(object):
 
         :return: winner as string 'X', 'O', or None
         >>> CoordsTTTBoard().calc_winner()
-        None
-        >>> CoordsTTTBoard([(1, 1, 'X'), (0, 2, 'O'), (0, 1, 'X'), (2, 2, 'O'), (2, 1, 'X')])
-        X
+
+        >>> CoordsTTTBoard([(1, 1, 'X'), (0, 2, 'O'), (0, 1, 'X'), (2, 2, 'O'), (2, 1, 'X')]).calc_winner()
+        'X'
+        >>> CoordsTTTBoard([(1, 0, 'O'), (1, 1, 'O'), (0, 1, 'X'), (2, 0, 'O'), (2, 1, 'X'), (1, 2, 'O')]).calc_winner()
+        'O'
+        >>> CoordsTTTBoard([(0, 2, 'O'), (1, 1, 'X'), (0, 0, 'X'), (2, 0, 'O'), (2, 1, 'O'), (2, 2, 'X')]).calc_winner()
+        'X'
+        >>> CoordsTTTBoard([(0, 2, 'O'), (0, 1, 'X'), (1, 2, 'X'), (2, 0, 'O'), (2, 1, 'X'), (1, 1, 'O')]).calc_winner()
+        'O'
         """
         SQR = 3
         # for move in board:
@@ -118,10 +124,8 @@ class CoordsTTTBoard(object):
 
 
 
-
-
 def main():
-    print(CoordsTTTBoard([(1, 1, 'X'), (0, 2, 'O'), (0, 1, 'X'), (2, 2, 'O'), (2, 1, 'X')]).calc_winner())
+    print(CoordsTTTBoard([(1, 0, 'O'), (1, 1, 'O'), (0, 1, 'X'), (2, 0, 'O'), (2, 1, 'X'), (1, 2, 'O')]).calc_winner())
 
 
 if __name__ == '__main__':

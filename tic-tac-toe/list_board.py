@@ -142,8 +142,6 @@ class ListTTTBoard(object):
         return None
 
 
-
-
 def main():
     print(ListTTTBoard().place_token(1, 2, 'X'))
 
