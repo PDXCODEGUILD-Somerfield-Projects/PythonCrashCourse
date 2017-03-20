@@ -44,16 +44,16 @@ class DictTTTBoard(object):
 
         :return: printable string representation of the board in a matrix
         >>> str(DictTTTBoard({(0, 0): 'X', (0, 1): None, (0, 2): None, (1, 0): 'O', (1, 1): None, (1, 2): 'X', (2, 0): None, (2, 1): None, (2, 2): 'O'}))
-        '|X| | |\\r\\n|O| |X|\\r\\n| | |O|\\r\\n'
+        '|X|O| |\\r\\n| | | |\\r\\n| |X|O|\\r\\n'
         >>> str(DictTTTBoard())
         '| | | |\\r\\n| | | |\\r\\n| | | |\\r\\n'
         """
         # creates string representation of the board for printing
         pretty_string = '|'
-        for row, col in sorted(self._coord_to_token.keys()):
-            if col == 0 and row != 0:
+        for col, row in sorted(self._coord_to_token.keys()):
+            if row == 0 and col != 0:
                 pretty_string += '\r\n|'
-            token = self._coord_to_token.get((row, col), ' ')
+            token = self._coord_to_token.get((col, row), ' ')
             if token is not None:
                 pretty_string += token + '|'
             else:
