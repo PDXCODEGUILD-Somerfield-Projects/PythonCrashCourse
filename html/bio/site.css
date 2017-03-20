@@ -1,0 +1,23 @@
+/* CSS for bio */
+body {
+  background-color: #c8c3cc;
+}
+li {
+  color: #484f4f;
+}
+.quote {
+  color: #563f46;
+  font-weight: bolder;
+  font-family: Georgia, serif;
+}
+#text {
+  color: #484f4f;
+}
+
+.photo-cap {
+  color: #3b3a30;
+}
+img {
+  border-radius: 25px;
+  color: grey;
+}
