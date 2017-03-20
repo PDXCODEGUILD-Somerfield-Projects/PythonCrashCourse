@@ -36,7 +36,7 @@ class CoordsTTTBoard(object):
 
         :return: printable string representation of board as a matrix
         >>> str(CoordsTTTBoard([(1, 1, 'X'), (0, 1, 'O')]))
-        ' |O| \\n |X| \\n | | \\n'
+        ' | | \\nO|X| \\n | | \\n'
         >>> str(CoordsTTTBoard())
         ' | | \\n | | \\n | | \\n'
         """
@@ -44,8 +44,8 @@ class CoordsTTTBoard(object):
         _row_list = board_func.build_empty_list_board(None)
         # fills the empty board with moves
         for move in self._token_coords:
-            move_row = move[0]
-            move_col = move[1]
+            move_row = move[1]
+            move_col = move[0]
             token = move[2]
             _row_list[move_row][move_col] = token
         # creates a string representation of the board from list_board function
