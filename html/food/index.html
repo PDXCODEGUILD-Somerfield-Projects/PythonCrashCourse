@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Food</title>
+</head>
+<body>
+  <form>
+    <div>
+      <label>What did you have for dinner last night? <input type="text" name="dinner"</label>
+    </div>
+    <div>
+      <label>Select if you had any of these:</label>
+        <input type="checkbox" name="foodstuff" value="meat" />meat
+        <input type="checkbox" name="foodstuff" value="potatoes" />potatoes
+        <input type="checkbox" name="foodstuff" value="broccoli" />broccoli
+        <input type="checkbox" name="foodstuff" value="cheese" />cheese
+    </div>
+    <div>
+      <input type="radio" name="vegetarian" value="vegetarian" />vegetarian
+      <input type="radio" name="vegetarian" value="non-vegetarian" />non-vegetarian
+    </div>
+    <div>
+      <label>favorite ice cream flavors</label>
+      <select name="flavors">
+        <option value="vanilla">vanilla</option>
+        <option value="chocolate">chocolate</option>
+        <option value="strawberry">strawberry</option>
+        <option value="rocky road">rocky road</option>
+        <option value="mint chocolate chip">mint chocolate chip</option>
+        <option value="coconut">coconut</option>
+        <option value="peanut butter fudge">peanut butter fudge</option>
+        <option value="raspberry cheesecake">raspberry cheesecake</option>
+        <option value="oreo">oreo</option>
+      </select>
+    </div>
+    <div>
+      <label>Tell us about your most memorable meal:</label>
+      <textarea name="best-meal"></textarea>
+    </div>
+    <div>
+      <button name="hungry" disabled>
+        Push if hungry
+      </button>
+    </div>
+    <div>
+      <label>Send us a photo of your best pair of chopsticks: </label>
+      <input type="file" name="file" />
+    </div>
+    <div>
+      <button name="Submit">
+        Submit
+      </button>
+    </div>
+
+  </form>
+
+
+</body>
+
+
+
+</html>
