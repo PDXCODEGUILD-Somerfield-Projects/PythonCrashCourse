@@ -1,0 +1,44 @@
+html {
+  display: -webkit-flex;
+  display: flex;
+}
+
+.container {
+  display: flex;
+  flex: 2;
+}
+
+body {
+  background-color: #f4e1d2;
+}
+
+
+nav {
+  width: 30%;
+  background-color: #50394c;
+
+}
+
+.nav-menu {
+  color: white;
+  text-align: center;
+}
+
+.main {
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+
+}
+.photo-box {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+
+  display: inline;
+}
+
+img {
+  padding: 2em;
+}
