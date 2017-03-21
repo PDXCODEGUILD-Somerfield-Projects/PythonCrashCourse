@@ -1,7 +1,23 @@
 /* CSS for bio */
+header {
+  background-color: #563f46;
+  color: #c8c3cc;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 
 body {
-  background-color: #c8c3cc;
+  background: linear-gradient(to bottom, #c8c3cc 0%, #8ca3a3 100%);
+}
+
+a:link {
+  color: #c8c3cc;
+}
+
+a:visited {
+  color: slategray;
 }
 
 li {
