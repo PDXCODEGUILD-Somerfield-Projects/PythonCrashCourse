@@ -20,15 +20,24 @@ nav {
 }
 
 .nav-menu {
-  color: white;
+  color: #f4e1d2;
   text-align: center;
+}
+a {
+  color: #f4e1d2;
 }
 
 .main {
   display: flex;
   -webkit-flex-direction: column;
   flex-direction: column;
+  padding-left: 1em;
 
+}
+header {
+  background-color: #ffef96;
+  text-align: center;
+  padding-left: 0;
 }
 .photo-box {
   display: -webkit-flex;
@@ -41,4 +50,14 @@ nav {
 
 img {
   padding: 2em;
+}
+
+footer {
+  background-color:#b2b2b2;
+}
+
+.description {
+  font-style: italic;
+  color: #50394c;
+  text-align: center;
 }
