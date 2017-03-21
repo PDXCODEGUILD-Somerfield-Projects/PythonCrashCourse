@@ -1,10 +1,24 @@
 /* CSS for bio */
+
 body {
   background-color: #c8c3cc;
 }
+
 li {
   color: #484f4f;
+  list-style: none;
+  overflow: visible;
+  padding-left: 40px;
+
 }
+
+li::before {
+  content: "☞";
+  left: 0;
+  margin: 0 1em;
+  position: absolute;
+}
+
 .quote {
   color: #563f46;
   font-weight: bolder;
@@ -20,4 +34,13 @@ li {
 img {
   border-radius: 25px;
   color: grey;
+}
+
+footer {
+  background-color: #484f4f;
+  color: #c8c3cc;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
