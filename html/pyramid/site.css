@@ -1,0 +1,37 @@
+body {
+
+}
+.flex-container {
+  display: -webkit-flex;
+  display: flex;
+
+  height: 100px;
+  width: auto;
+  border: 1px solid black;
+  margin: 20px;
+}
+.inner-box {
+  display: -webkit-flex;
+  display: flex;
+  height: 80px;
+  width: 100%;
+  border: 1px solid black;
+  margin: 10px;
+}
+
+.inner-box.middle-left {
+  width: 75%;
+}
+
+.inner-box.middle-right {
+  width: 25%;
+}
+
+.flex-container.bottom {
+  justify-content:space-between;
+  justify-content: space-around;
+}
+
+.inner-box.bottom {
+  width: 90px;
+}
