@@ -13,7 +13,7 @@ body {
 .inner-box {
   display: -webkit-flex;
   display: flex;
-  height: 80px;
+  height: 78px;
   width: 100%;
   border: 1px solid black;
   margin: 10px;
