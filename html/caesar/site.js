@@ -9,7 +9,6 @@ var letterToNumber = {
 };
 
 
-
 /* This function 'encrypts' a string
 into Caesar cipher. It takes in plainStr,
 transforms it to a numeric represention of
@@ -48,4 +47,44 @@ function caesarEncrypt(plainStr, key) {
     encryptedStr += encryptedLetter;
   }
   return encryptedStr;
+}
+
+/* This function 'decrypts' a string
+into Caesar cipher. It takes in encStr,
+transforms it to its numeric represention of
+the alphabet, subtracts the input cipher key to
+the numbers and transforms the translated
+numbers back into a string --returning a
+'decrypted' string.*/
+function caesarDecrypt(encStr, key) {
+  var encStrUpper = encStr.toUpperCase();
+  var numberArray = [];
+  for (var i = 0; i < encStrUpper.length; i += 1) {
+    var letter = encStrUpper.charAt(i);
+    numberArray.push(letterToNumber[letter]);
+  }
+  var decryptedNumberArray = [];
+  var newNum = null;
+  for (var i = 0; i < numberArray.length; i += 1) {
+    var number = numberArray[i];
+    if (number === null) {
+      newNum = null;
+    } else {
+      newNum = number - key;
+    }
+    if (newNum < 0) {
+      newNum = newNum + 25;
+    } else {
+      newNum = newNum;
+    }
+    decryptedNumberArray.push(newNum);
+  }
+  var decryptedStr = '';
+  for (var i = 0; i < decryptedNumberArray.length; i += 1) {
+    var decryptedNumber = decryptedNumberArray[i];
+    var decryptedLetter = _.findKey(letterToNumber,
+      _.partial(_.isEqual, decryptedNumber));
+    decryptedStr += decryptedLetter;
+  }
+  return decryptedStr;
 }
