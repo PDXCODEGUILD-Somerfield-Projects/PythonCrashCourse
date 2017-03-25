@@ -5,6 +5,7 @@ function Completer() {
 
   this.addCompletion = function(str) {
     this.completerArray.push(str);
+    this.selectCompletion(str);
   };
 
   this.removeCompletion = function(str) {
@@ -12,6 +13,9 @@ function Completer() {
     if (removeIndex > -1) {
       var removedArray = this.completerArray.splice(removeIndex, 1);
       return this.completerArray;
+    }
+    if (!(this.itemToWeight === 'undefined')) {
+      this.itemToWeight.delete(str);
     }
   };
 
@@ -22,6 +26,17 @@ function Completer() {
     var checkArray = this.completerArray.filter(checkItem);
     console.log(checkArray);
     return this.checkArray;
+  };
+
+  this.selectCompletion = function(str) {
+    if (typeof this.itemToWeight === 'undefined') {
+      this.itemToWeight = {}
+      this.itemToWeight[str] = 0;
+    } else if (!(str in this.itemToWeight)) {
+      this.itemToWeight[str] = 0;
+    } else {
+      this.itemToWeight[str] += 1;
+    }
   };
 }
 
