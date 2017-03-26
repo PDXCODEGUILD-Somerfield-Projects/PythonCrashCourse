@@ -140,10 +140,18 @@ function DecryptSansKey(encStr) {
         var component = squaredResidual / expected;
         if (s === 0) {
           leastChi = component;
-          chiShift = s - letterToNumber[strLetter];
+          if (s > letterToNumber[strLetter]) {
+            chiShift = s - letterToNumber[strLetter];
+          } else {
+            chiShift = s + 26 - letterToNumber[strLetter];
+          }
         } else if (component < leastChi) {
           leastChi = component;
-          chiShift = letterToNumber[strLetter] - s;
+          if (s > letterToNumber[strLetter]) {
+            chiShift = s - letterToNumber[strLetter];
+          } else {
+            chiShift = s + 26 - letterToNumber[strLetter];
+          }
         }
       }
       bestShift.push(chiShift);
