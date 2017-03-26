@@ -115,7 +115,7 @@ function DecryptSansKey(encStr) {
     'Y': 0, 'Z': 0
   };
   var encStrUpper = encStr.toUpperCase();
-  var strSpaces = 0
+  var strSpaces = 0;
   for (var i = 0; i < encStrUpper.length; i += 1) {
     var letter = encStrUpper.charAt(i);
     if (!(letter === ' ')) {
@@ -131,11 +131,9 @@ function DecryptSansKey(encStr) {
     var leastChi = 0;
     var chiShift = null;
     var observed = strletterToFrequency[strLetter];
-    console.log('outer loop at state: ' + lf + ':' + strLetter + '\n');
     if (!(strLetter === ' ')) {
       for (var s = 0; s < 26; s += 1) {
         var shiftLetter = NumberToLetter[s];
-        console.log('inner loop at state ' + shiftLetter + '\n');
         var expected = letterToFrequency[shiftLetter] / 1000 * ltrLength;
         var residual = observed - expected;
         var squaredResidual = Math.pow(residual, 2);
@@ -145,10 +143,37 @@ function DecryptSansKey(encStr) {
           chiShift = s - letterToNumber[strLetter];
         } else if (component < leastChi) {
           leastChi = component;
-          chiShift = s - letterToNumber[strLetter];
+          chiShift = letterToNumber[strLetter] - s;
         }
       }
       bestShift.push(chiShift);
     }
   }
+  bestShift.sort();
+  var bestShiftFreq = 0;
+  var bestOfBest = 0;
+  for (var i = 0; i < bestShift.length; i += 1) {
+    if (i === 0) {
+      var val = bestShift[i];
+      var freq = 1;
+      bestShiftFreq = 1;
+      bestOfBest = val;
+    } else if (bestShift[i] === val) {
+      freq += 1;
+    } else {
+      if (freq > bestShiftFreq) {
+        bestShiftFreq = freq;
+        bestOfBest = val;
+        val = bestShift[i];
+        freq = 1;
+      } else {
+        val = bestShift[i];
+        freq = 1;
+      }
+    }
+  }
+  console.log('Most frequent shift = ' + bestOfBest);
+  console.log('Frequency = ' + bestShiftFreq);
+  var decryptedStr = caesarDecrypt(encStr, bestOfBest);
+  console.log(decryptedStr);
 }
