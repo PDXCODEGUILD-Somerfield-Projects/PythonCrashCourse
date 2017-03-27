@@ -106,7 +106,8 @@ function caesarDecrypt(encStr, key) {
   return decryptedStr;
 }
 
-function DecryptSansKey(encStr) {
+function decryptSansKey(encStr) {
+  // a dict object to save the frequency of each letter in the string
   var strletterToFrequency = {
     'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0,
     'G': 0, 'H': 0, 'I': 0, 'J': 0, 'K': 0, 'L': 0,
@@ -116,22 +117,70 @@ function DecryptSansKey(encStr) {
   };
   var encStrUpper = encStr.toUpperCase();
   var strSpaces = 0;
+  // runs through the string to calculate frequency of each letter
   for (var i = 0; i < encStrUpper.length; i += 1) {
     var letter = encStrUpper.charAt(i);
     if (!(letter === ' ')) {
       strletterToFrequency[letter] = strletterToFrequency[letter] + 1;
     } else {
+      // also counts the number of spaces in the string
       strSpaces += 1;
     }
   }
-  var bestShift = [];
-  for (var lf = 0; lf < encStrUpper.length; lf += 1) {
-    var strLetter = encStrUpper[lf];
-    var ltrLength = encStrUpper.length - strSpaces;
+  //length of string without spaces
+  var encLength = encStrUpper.length - strSpaces;
+
+  /*
+  function to calculate chi squared based on instructions from
+  http://www.statisticshowto.com/what-is-a-chi-square-statistic/
+  runs through all of the letters of the alphabet and finds the
+  corresponding letter with the lowest chi square statistic,
+  returning the 'shift' number to that letter
+  */
+  function chiCalc(encStrUpper) {
+    // gets the observed frequency of the current letter
+    var observed = strletterToFrequency[encStrUpper];
+    // resets the values to track chi and shift
     var leastChi = 0;
     var chiShift = null;
-    var observed = strletterToFrequency[strLetter];
+    // calculates the corresponding chi squared statistic for each
+    // letter of the alphabet
+    for (var alpha = 0; alpha < 26; alpha += 1) {
+      var shiftLetter = NumberToLetter[alpha];
+      var expected = letterToFrequency[shiftLetter] / 1000 * encLength;
+      var residualSquared = Math.pow(observed - expected, 2);
+      var component = residualSquared / expected;
+        // saves the lowest chi score and corresponding shift
+      if (alpha === 0) {
+        leastChi = component;
+        if (alpha < letterToNumber[encStrUpper]) {
+          chiShift = letterToNumber[encStrUpper] - alpha;
+        } else {
+          chiShift = letterToNumber[encStrUpper] + 26 - alpha;
+        }
+      } else if (component < leastChi) {
+        leastChi = component;
+        if (alpha < letterToNumber[encStrUpper]) {
+          chiShift = letterToNumber[encStrUpper] - alpha;
+        } else {
+          chiShift = letterToNumber[encStrUpper] + 26 - alpha;
+        }
+      }
+
+    }
+    // returns the shift number for the letter with the lowest chi score
+    return chiShift;
+  }
+
+
+  var bestShift = [];
+  // runs through each letter in the string
+  for (var i = 0; i < encStrUpper.length; i += 1) {
+    var strLetter = encStrUpper[i];
+    // runs the chiCalc function on anything that's not a space in the string
     if (!(strLetter === ' ')) {
+      var chiShift = chiCalc(strLetter);
+      /*
       for (var s = 0; s < 26; s += 1) {
         var shiftLetter = NumberToLetter[s];
         var expected = letterToFrequency[shiftLetter] / 1000 * ltrLength;
@@ -154,10 +203,20 @@ function DecryptSansKey(encStr) {
           }
         }
       }
+      */
+      /*
+      saves an array of the lowest chi shift result for each
+      letter in the string
+      */
       bestShift.push(chiShift);
     }
   }
+  // sorts the array to consolidate values
   bestShift.sort();
+  /*
+  runs through the array to find the shift with the highest
+  frequency in the array
+  */
   var bestShiftFreq = 0;
   var bestOfBest = 0;
   for (var i = 0; i < bestShift.length; i += 1) {
