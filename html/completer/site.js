@@ -11,24 +11,28 @@ function Completer() {
   // adds an item to the Completer list
   this.addCompletion = function(str) {
     this.completerArray.push(str);
+    // also adds item to the list that tracks selection 'weight'
     this.selectCompletion(str);
   };
-  // locates item in the list and removes it
+  // locates item in the list and removes it from the list
   this.removeCompletion = function(str) {
     var removeIndex = this.completerArray.indexOf(str);
     if (removeIndex > -1) {
       var removedArray = this.completerArray.splice(removeIndex, 1);
       return this.completerArray;
     }
+    // also removes the item from the list that tracks selection 'weight'
     if (!(this.itemToWeight === 'undefined')) {
       this.itemToWeight.delete(str);
     }
   };
-  // creates a suggestion list based on users' first letter(s)
+  // creates a suggestion list based on users' first input letter(s)
   this.complete = function(prefix) {
     function checkItem(item) {
       return item.startsWith(prefix);
     }
+    // gets the list of items sorted by weight and filters by the
+    // users' first input letter
     var checkArray = this.itemsSortedByWeight.filter(checkItem);
     console.log(checkArray);
     return this.checkArray;
@@ -38,14 +42,18 @@ function Completer() {
   from most to least weighted
   */
   this.selectCompletion = function(str) {
+    // sets up dict object to track 'weight' if it's not already created
     if (typeof this.itemToWeight === 'undefined') {
       this.itemToWeight = {};
       this.itemToWeight[str] = 0;
+      // adds the item to the dict if it's not already there
     } else if (!(str in this.itemToWeight)) {
       this.itemToWeight[str] = 0;
+      // if the item is in the dict, it adds 'weight' to its tally
     } else {
       this.itemToWeight[str] += 1;
     }
+    // sets up array for list of suggestion items
     this.itemsSortedByWeight = [];
     var itemToWeight = this.itemToWeight;
     // re-shuffles the array based on item weight
