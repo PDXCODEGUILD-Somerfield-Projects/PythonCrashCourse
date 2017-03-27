@@ -13,7 +13,7 @@ var NumberToLetter = {
   6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K', 11: 'L',
   12: 'M', 13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R',
   18: 'S', 19: 'T', 20: 'U', 21: 'V', 22: 'W', 23: 'X',
-  24: 'Y', 25: 'Z', ' ': null
+  24: 'Y', 25: 'Z', null: ' '
 };
 
 var letterToFrequency = {
@@ -24,24 +24,30 @@ var letterToFrequency = {
   'Y': 19, 'Z': 1
 };
 
-
-
 /* This function 'encrypts' a string
 into Caesar cipher. It takes in plainStr,
-transforms it to a numeric represention of
-the alphabet, adds the input cipher key to
-the numbers and transforms the translated
+transforms it to a numeric represention
+(A = 0, B = 1, etc), adds the cipher key to
+each number and transforms the translated
 numbers back into a string --returning an
-'encrypted' string.*/
+'encrypted' string.
+
+Input string can only contain letters and spaces;
+the input key is an integer*/
 function caesarEncrypt(plainStr, key) {
+  // changes string to uppercase letters
   var plainStrUpper = plainStr.toUpperCase();
   var numberArray = [];
+  // loops through the string and creates an array of
+  // corresponding numbers
   for (var i = 0; i < plainStrUpper.length; i += 1) {
     var letter = plainStrUpper.charAt(i);
     numberArray.push(letterToNumber[letter]);
   }
   var encryptedNumberArray = [];
   var newNum = null;
+  // loops through the array of numbers and adds key to
+  // each number, creating an encryption set
   for (var i = 0; i < numberArray.length; i += 1) {
     var number = numberArray[i];
     if (number === null) {
@@ -57,31 +63,50 @@ function caesarEncrypt(plainStr, key) {
     encryptedNumberArray.push(newNum);
   }
   var encryptedStr = '';
+  // loops through the 'encryption' numbers and creates a
+  // new encrypted string for output
   for (var i = 0; i < encryptedNumberArray.length; i += 1) {
     var encryptedNumber = encryptedNumberArray[i];
+    var encryptedLetter = NumberToLetter[encryptedNumber];
+    /*
+    ** alternative way to pull key with one dict object:
     var encryptedLetter = _.findKey(letterToNumber,
       _.partial(_.isEqual, encryptedNumber));
+    */
     encryptedStr += encryptedLetter;
   }
   return encryptedStr;
 }
 
 /* This function 'decrypts' a string
-into Caesar cipher. It takes in encStr,
-transforms it to its numeric represention of
-the alphabet, subtracts the input cipher key to
-the numbers and transforms the translated
+into Caesar cipher. It takes in an encoded string,
+transforms it to its numeric represention
+(A = 0, B = 1, etc.), subtracts the cipher key from
+each number and transforms the translated
 numbers back into a string --returning a
-'decrypted' string.*/
+'decrypted' string.
+
+Takes in string as letters, spaces only;
+takes in key as an integer */
 function caesarDecrypt(encStr, key) {
+  // changes string to upper case letters
   var encStrUpper = encStr.toUpperCase();
   var numberArray = [];
+  /*
+  loops through the string, changing each letter
+  to its numeric represention and creates a
+  number array
+  */
   for (var i = 0; i < encStrUpper.length; i += 1) {
     var letter = encStrUpper.charAt(i);
     numberArray.push(letterToNumber[letter]);
   }
   var decryptedNumberArray = [];
   var newNum = null;
+  /*
+  loops through the number array and subtracts the key
+  from each number, creating a new 'decrypted' number array
+  */
   for (var i = 0; i < numberArray.length; i += 1) {
     var number = numberArray[i];
     if (number === null) {
@@ -97,6 +122,7 @@ function caesarDecrypt(encStr, key) {
     decryptedNumberArray.push(newNum);
   }
   var decryptedStr = '';
+  // transforms the number array into the decrypted string
   for (var i = 0; i < decryptedNumberArray.length; i += 1) {
     var decryptedNumber = decryptedNumberArray[i];
     var decryptedLetter = _.findKey(letterToNumber,
@@ -115,28 +141,14 @@ function decryptSansKey(encStr) {
     'S': 0, 'T': 0, 'U': 0, 'V': 0, 'W': 0, 'X': 0,
     'Y': 0, 'Z': 0
   };
-  var encStrUpper = encStr.toUpperCase();
-  var strSpaces = 0;
-  // runs through the string to calculate frequency of each letter
-  for (var i = 0; i < encStrUpper.length; i += 1) {
-    var letter = encStrUpper.charAt(i);
-    if (!(letter === ' ')) {
-      strletterToFrequency[letter] = strletterToFrequency[letter] + 1;
-    } else {
-      // also counts the number of spaces in the string
-      strSpaces += 1;
-    }
-  }
-  //length of string without spaces
-  var encLength = encStrUpper.length - strSpaces;
 
-  /*
-  function to calculate chi squared based on instructions from
-  http://www.statisticshowto.com/what-is-a-chi-square-statistic/
-  runs through all of the letters of the alphabet and finds the
-  corresponding letter with the lowest chi square statistic,
-  returning the 'shift' number to that letter
-  */
+    /*
+    function to calculate chi squared based on instructions from
+    http://www.statisticshowto.com/what-is-a-chi-square-statistic/
+    runs through all of the letters of the alphabet and finds the
+    corresponding letter with the lowest chi square statistic,
+    returning the 'shift' number to that letter
+    */
   function chiCalc(encStrUpper) {
     // gets the observed frequency of the current letter
     var observed = strletterToFrequency[encStrUpper];
@@ -172,7 +184,20 @@ function decryptSansKey(encStr) {
     return chiShift;
   }
 
-
+  var encStrUpper = encStr.toUpperCase();
+  var strSpaces = 0;
+  // runs through the string to calculate frequency of each letter
+  for (var i = 0; i < encStrUpper.length; i += 1) {
+    var letter = encStrUpper.charAt(i);
+    if (!(letter === ' ')) {
+      strletterToFrequency[letter] = strletterToFrequency[letter] + 1;
+    } else {
+      // also counts the number of spaces in the string
+      strSpaces += 1;
+    }
+  }
+  //length of string without spaces
+  var encLength = encStrUpper.length - strSpaces;
   var bestShift = [];
   // runs through each letter in the string
   for (var i = 0; i < encStrUpper.length; i += 1) {
@@ -180,30 +205,6 @@ function decryptSansKey(encStr) {
     // runs the chiCalc function on anything that's not a space in the string
     if (!(strLetter === ' ')) {
       var chiShift = chiCalc(strLetter);
-      /*
-      for (var s = 0; s < 26; s += 1) {
-        var shiftLetter = NumberToLetter[s];
-        var expected = letterToFrequency[shiftLetter] / 1000 * ltrLength;
-        var residual = observed - expected;
-        var squaredResidual = Math.pow(residual, 2);
-        var component = squaredResidual / expected;
-        if (s === 0) {
-          leastChi = component;
-          if (s > letterToNumber[strLetter]) {
-            chiShift = s - letterToNumber[strLetter];
-          } else {
-            chiShift = s + 26 - letterToNumber[strLetter];
-          }
-        } else if (component < leastChi) {
-          leastChi = component;
-          if (s > letterToNumber[strLetter]) {
-            chiShift = s - letterToNumber[strLetter];
-          } else {
-            chiShift = s + 26 - letterToNumber[strLetter];
-          }
-        }
-      }
-      */
       /*
       saves an array of the lowest chi shift result for each
       letter in the string
