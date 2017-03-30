@@ -1,0 +1,19 @@
+.text-box {
+  display: flex;
+}
+
+.div.error {
+  background-color: yellow;
+}
+
+.status-bar.error {
+  background-color: red;
+}
+
+.status-bar.valid {
+  background-color: green;
+}
+
+.warning-text {
+  color: red;
+}
