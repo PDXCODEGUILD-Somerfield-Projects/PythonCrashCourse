@@ -9,7 +9,7 @@ submits the form.
 */
 
 
-function validator(boxName) {
+function validator(boxName, check) {
 
   // uses Reg Ex to check user input for 'word'(space)'word' format
   function checkName(str) {
@@ -29,19 +29,27 @@ function validator(boxName) {
     return valid;
   }
 
-  function createError(boxName) {
+  function createWarningMsg(boxName) {
     // creates error message if input is not valid
     var errorMsg = $('<div/>', {
-      'class': 'error',
+      'class': 'warning-text',
       'text': 'Error: input not valid.',
     });
     $('#' + boxName).after(errorMsg);
   }
 
-
   function createValid(boxName) {
     // removes error message if textbox is valid
-    $('.error').remove();
+    $('.warning-text').remove();
+  }
+
+  function createWarningField(boxName) {
+    // adds warning class to the text box element
+    $('#' + boxName).addClass('warning');
+  }
+
+  function removeWarningField(boxName) {
+    $('#' + boxName).removeClass('warning');
   }
 
   //picks the validation function to run based on the textbox ID
@@ -55,22 +63,36 @@ function validator(boxName) {
     var phoneStr = $('#phone-box').val();
     var strValid = checkPhone(phoneStr);
   }
-  if (strValid === false) {
-    createError(boxName);
-  } else {
+
+  if (strValid === false && check === 'box-change') {
+    createWarningMsg(boxName);
+  } else if (strValid === true && check === 'box-change') {
     createValid(boxName);
+  } else if (strValid === false && check === 'key-change') {
+    createWarningField(boxName);
+  } else {
+    removeWarningField(boxName);
   }
 }
 
 
 $(document).ready(function() {
+  $('#user-name-box').keyup(function() {
+    validator('user-name-box', 'key-change');
+  });
   $('#user-name-box').change(function() {
-    validator('user-name-box');
+    validator('user-name-box', 'box-change');
+  });
+  $('#dob-box').keyup(function() {
+    validator('dob-box', 'key-change');
   });
   $('#dob-box').change(function() {
-    validator('dob-box');
+    validator('dob-box', 'box-change');
+  });
+  $('#phone-box').keyup(function() {
+    validator('phone-box', 'key-change');
   });
   $('#phone-box').change(function() {
-    validator('phone-box');
+    validator('phone-box', 'box-change');
   });
 });
