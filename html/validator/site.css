@@ -6,11 +6,11 @@
   background-color: yellow;
 }
 
-.status-bar.error {
+#status-bar.error {
   background-color: red;
 }
 
-.status-bar.valid {
+#status-bar.valid {
   background-color: green;
 }
 

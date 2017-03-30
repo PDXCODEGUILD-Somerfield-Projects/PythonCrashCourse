@@ -62,7 +62,24 @@ function validator(boxName, check) {
   } else if (boxName === 'phone-box') {
     var phoneStr = $('#phone-box').val();
     var strValid = checkPhone(phoneStr);
+  } else if (boxName === 'status-bar') {
+    var nameStr = $('#user-name-box').val();
+    var nameStrValid = checkName(nameStr);
+    var dobStr = $('#dob-box').val();
+    var dobStrValid = checkDob(dobStr);
+    var phoneStr = $('#phone-box').val();
+    var phoneStrValid = checkPhone(phoneStr);
+    if (nameStrValid === true &&
+      dobStrValid === true &&
+      phoneStrValid === true) {
+      $('#status-bar').addClass('valid');
+      $('#status-bar').html('<h3>SUCCESS: Input is valid!</h3>');
+    } else {
+      $('#status-bar').addClass('error');
+      $('#status-bar').html('<h3>ERROR: Input not valid!</h3>');
+    }
   }
+
 
   if (strValid === false && check === 'box-change') {
     createWarningMsg(boxName);
@@ -94,5 +111,11 @@ $(document).ready(function() {
   });
   $('#phone-box').change(function() {
     validator('phone-box', 'box-change');
+  });
+  $(':button').on('click', function(event) {
+    event.preventDefault();
+    var statusBar = $('<header id="status-bar"></header>');
+    $('.form').before(statusBar);
+    validator('status-bar', 'submit');
   });
 });
