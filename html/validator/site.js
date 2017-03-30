@@ -1,4 +1,5 @@
 'use strict';
+
 /*
 This function validates user input fields;
 turns the field yellow if the validation is violated
@@ -7,8 +8,6 @@ to the field if the input is invalid, and displays a
 status bar heading of 'success' or 'error' once the user
 submits the form.
 */
-
-
 function validator(boxName, check) {
 
   // uses Reg Ex to check user input for 'word'(space)'word' format
@@ -62,6 +61,12 @@ function validator(boxName, check) {
   } else if (boxName === 'phone-box') {
     var phoneStr = $('#phone-box').val();
     var strValid = checkPhone(phoneStr);
+    /*
+    To decide whether the status bar should show success or
+    error, all of the field boxes are validated. If they all
+    return 'true', the status bar updates a 'success' message; if
+    any return 'false', the status bar updates an 'error' message.
+    */
   } else if (boxName === 'status-bar') {
     var nameStr = $('#user-name-box').val();
     var nameStrValid = checkName(nameStr);
@@ -80,7 +85,9 @@ function validator(boxName, check) {
     }
   }
 
-
+  /* Identifies whether the user input matches the valid format
+  and runs the appropriate 'warning' function to change the field
+  color, create an error message warning, or remove a warning */
   if (strValid === false && check === 'box-change') {
     createWarningMsg(boxName);
   } else if (strValid === true && check === 'box-change') {
@@ -92,7 +99,10 @@ function validator(boxName, check) {
   }
 }
 
-
+/*
+Looks for updates or changes in the text fields
+and button click to run validator function
+*/
 $(document).ready(function() {
   $('#user-name-box').keyup(function() {
     validator('user-name-box', 'key-change');
@@ -112,6 +122,7 @@ $(document).ready(function() {
   $('#phone-box').change(function() {
     validator('phone-box', 'box-change');
   });
+  // on submit button click, the status bar is added to html
   $(':button').on('click', function(event) {
     event.preventDefault();
     var statusBar = $('<header id="status-bar"></header>');
