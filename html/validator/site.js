@@ -77,9 +77,11 @@ function validator(boxName, check) {
     if (nameStrValid === true &&
       dobStrValid === true &&
       phoneStrValid === true) {
+      $('#status-bar').removeClass('error');
       $('#status-bar').addClass('valid');
       $('#status-bar').html('<h3>SUCCESS: Input is valid!</h3>');
     } else {
+      $('#status-bar').removeClass('valid');
       $('#status-bar').addClass('error');
       $('#status-bar').html('<h3>ERROR: Input not valid!</h3>');
     }
