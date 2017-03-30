@@ -30,24 +30,17 @@ function validator(boxName) {
   }
 
   function createError(boxName) {
+    // creates error message if input is not valid
     var errorMsg = $('<div/>', {
       'class': 'error',
       'text': 'Error: input not valid.',
     });
     $('#' + boxName).after(errorMsg);
   }
-/*
-$('<div/>', {
-    'id':'myDiv',
-    'class':'myClass',
-    'text':'Text Only',
-}).on('click', function(){
-    alert(this.id); // myDiv
-}).appendTo('body');
-*/
 
 
   function createValid(boxName) {
+    // removes error message if textbox is valid
     $('.error').remove();
   }
 
@@ -67,15 +60,17 @@ $('<div/>', {
   } else {
     createValid(boxName);
   }
-
 }
 
 
-
-
 $(document).ready(function() {
-  $('input').change(function() {
-    var box = $('input').attr('id');
-    validator(box);
+  $('#user-name-box').change(function() {
+    validator('user-name-box');
+  });
+  $('#dob-box').change(function() {
+    validator('dob-box');
+  });
+  $('#phone-box').change(function() {
+    validator('phone-box');
   });
 });
