@@ -1,0 +1,81 @@
+/* CSS for bio */
+header {
+  background-color: #563f46;
+  color: #c8c3cc;
+  padding-left: 25px;
+  padding-right: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+  font-family: cursive;
+}
+
+body {
+  background: linear-gradient(to bottom, #c8c3cc 0%, #8ca3a3 100%);
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: fantasy;
+}
+
+.middle-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 25px;
+}
+
+a:link {
+  color: #c8c3cc;
+}
+
+a:visited {
+  color: slategray;
+}
+
+li {
+  color: #484f4f;
+  font-style: italic;
+  list-style: none;
+  overflow: visible;
+  padding-left: 40px;
+}
+
+li::before {
+  content: "☞";
+  left: 0;
+  margin: 0 1em;
+  position: absolute;
+}
+
+.quote {
+  color: #563f46;
+  font-weight: bolder;
+  font-family: Georgia, serif;
+}
+
+#text {
+  color: #484f4f;
+}
+
+.photo-cap {
+  color: #3b3a30;
+}
+
+img {
+  border-radius: 25px;
+  color: grey;
+  float: left;
+}
+
+footer {
+  background-color: #484f4f;
+  color: #c8c3cc;
+  font-style: italic;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
