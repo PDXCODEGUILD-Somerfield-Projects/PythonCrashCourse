@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from . logic import getTimeZone, getTimeInTimezone, getTimeAtTimezoneByISO8601
+from django.http import Http404
+from . logic import get_time_zone, get_time_in_timezone, get_time_at_timezone_by_ISO8601, check_lat_long_valid
 import datetime
 import arrow
 
@@ -14,7 +15,7 @@ def homepage(request):
     return render(request, 'home.html')
 
 
-def currentDateTime(request):
+def current_date_time(request):
     '''
     gets current date time in DateTime format
     :param request:
@@ -24,7 +25,7 @@ def currentDateTime(request):
     return render(request, 'time.html', {'now': now})
 
 
-def timeZone(request, latitude, longitude):
+def time_zone(request, latitude, longitude):
     '''
     gets timezone from latitude longitude request
     :param request:
@@ -32,12 +33,17 @@ def timeZone(request, latitude, longitude):
     :param long:
     :return:
     '''
-    latitude = float(latitude)
-    longitude = float(longitude)
-    tz = getTimeZone(latitude, longitude)
-    return render(request, 'time.html', {'tz': tz})
+    try:
+        error_msg = check_lat_long_valid(latitude, longitude)
+    except error_msg != '':
+        raise Http404(error_msg)
+    if error_msg == '':
+        tz = get_time_zone(latitude, longitude)
+        return render(request, 'time.html', {'tz': tz})
+    else:
+        return render(request, '404.html', {'error_message': error_msg})
 
-def timeInTimezone(request, latitude, longitude):
+def time_in_timezone(request, latitude, longitude):
     '''
     gets time from latitude and longitude request
     :param request:
@@ -45,12 +51,17 @@ def timeInTimezone(request, latitude, longitude):
     :param longitude:
     :return:
     '''
-    latitude = float(latitude)
-    longitude = float(longitude)
-    time = getTimeInTimezone(latitude, longitude)
-    return render(request, 'time.html', {'time': time})
+    try:
+        error_msg = check_lat_long_valid(latitude, longitude)
+    except error_msg != '':
+        raise Http404(error_msg)
+    if error_msg == '':
+        time = get_time_in_timezone(latitude, longitude)
+        return render(request, 'time.html', {'time': time})
+    else:
+        return render(request, '404.html', {'error_message': error_msg})
 
-def TimeAtTimezoneByISO8601(request, time, latitude, longitude):
+def time_at_timezone_by_ISO8601(request, time, latitude, longitude):
     '''
     gets time by latitude, longitude and offset query time request
     :param request:
@@ -59,8 +70,29 @@ def TimeAtTimezoneByISO8601(request, time, latitude, longitude):
     :param longitude:
     :return:
     '''
-    latitude = float(latitude)
-    longitude = float(longitude)
-    ISO8601time = arrow.get(time)
-    tz_offset_time = getTimeAtTimezoneByISO8601(ISO8601time, latitude, longitude)
-    return render(request, 'time.html', {'tz_offset_time': tz_offset_time})
+    try:
+        error_msg = check_lat_long_valid(latitude, longitude)
+    except error_msg != '':
+        raise Http404(error_msg)
+    if error_msg == '':
+        tz_offset_time = get_time_at_timezone_by_ISO8601(time, latitude, longitude)
+        return render(request, 'time.html', {'tz_offset_time': tz_offset_time})
+    else:
+        return render(request, '404.html', {'error_message': error_msg})
+
+def error400(request):
+    '''
+    throws a bad request message to user
+    :return:
+    '''
+    error_msg = 'Something was wrong with the request. Please check that input was valid and try again.'
+    return render(request, '400.html', {'error_message': error_msg})
+
+def error404(request):
+    '''
+    throws an error message to user
+    :param request:
+    :return:
+    '''
+    error_msg = 'Something was wrong with the request. Please check that input was valid and try again.'
+    return render(request, '404.html', {'error_message': error_msg})
