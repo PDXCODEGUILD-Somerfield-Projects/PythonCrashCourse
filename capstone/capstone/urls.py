@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from . import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^home/$', views.landingpage, name='landing'),
+    url(r'^coordinates/.*$', views.latlong, name='latlong'),
 ]
+#\?lat=[+-]?\d+.\d+&lng=[+-]?\d+.\d+$
