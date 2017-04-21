@@ -20,6 +20,7 @@ from . import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^home/$', views.landingpage, name='landing'),
+    url(r'^base/$', views.base, name='base'),
     url(r'^coordinates/.*$', views.latlong, name='latlong'),
 ]
 #\?lat=[+-]?\d+.\d+&lng=[+-]?\d+.\d+$

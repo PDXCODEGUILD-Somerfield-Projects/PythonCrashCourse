@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 GOOGLE_MAPS_API_KEY = os.environ['GOOGLE_MAPS_API_KEY']
+TWITTER_CONSUMER_KEY = os.environ['TWITTER_CONSUMER_KEY']
+TWITTER_CONSUMER_SECRET = os.environ['TWITTER_CONSUMER_SECRET']
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
